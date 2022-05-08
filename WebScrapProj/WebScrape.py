@@ -2,32 +2,21 @@
 from bs4 import BeautifulSoup
 import pandas
 import json
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+import requests
 
 class Scrapify():
     def __init__(self, link):
-        #This block of code oppens a chrome browser in a hidden format, and then gets the specified website
-        self.options = webdriver.ChromeOptions()
-        self.options.add_argument("headless")
-        self.options.add_argument("start-maximized")
-        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=self.options)
         self.link = link
-        self.driver.get(self.link)
-        self.templist = []
+        self.r = requests.get(self.link)
 
-    def formatPage(self, parser):
-        self.content = self.driver.page_source
-        self.soup = BeautifulSoup(self.content, str(parser))
+    def makeTXT(self):
+        with open("scrapedata.txt", "w") as file:
+            file.write(self.r.text)
+        return file
+    
 
-    def filter
+HTMLfile = Scrapify("http://go.middlebury.edu/gotionary.php")
+TXTpage = HTMLfile.makeTXT()
 
 
-    def close(self):
-        self.driver.quit()
 
-page = Scrapify("http://go.middlebury.edu/gotionary.php")
-page.formatPage("html5lib")
-print(page)
